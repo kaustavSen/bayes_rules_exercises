@@ -1,0 +1,143 @@
+---
+title: "Bayes Rules Chapter 2 exercises"
+format: html
+---
+
+```{r, message=FALSE}
+library(tidyverse)
+library(scales)
+```
+
+**Exercise 2.4**
+
+```{r}
+prior <- c(0.05, 0.95)
+likelihood <- c(0.7, 0.03)
+posterior <- prior * likelihood / sum(prior * likelihood)
+posterior
+```
+
+$P(\text{Vampire exist | Bella sparkled}) = 55.1\%$
+
+**Exercise 2.5**
+
+a.  $P(\text{selected tree has mold}) = 18\%$
+
+b.  
+
+```{r}
+prob_mold_no_mold <- c(0.18, 0.92)
+prob_maple_mold_no_mold <- c(0.8, 0.1)
+sum(prob_mold_no_mold * prob_maple_mold_no_mold)
+```
+
+$P(\text{selecting a maple tree}) = 23.6\%$
+
+c.  
+
+```{r}
+prior <- c(0.18, 0.92)
+likelihood <- c(0.8, 0.1)
+posterior <- prior * likelihood / sum(prior * likelihood)
+posterior
+```
+
+$P(\text{has mold | maple tree}) = 61.0\%$
+
+d.  The prior probability of having mold is $18\%$. However, with the knowledge that the selected tree is a maple, the posterior probability of having mold increased to $61\%$.
+
+**Exercise 2.6:**
+
+We also need the proportion of restaurants with fewer than 4 stars that Sandra doesn't like.
+
+**Exercise 2.7:**
+
+a.  
+
+```{r}
+prob_swip <- c(0.08, 0.92)
+prob_non_binary <- c(0.2, 0.1)
+sum(prob_swip * prob_non_binary)
+```
+
+$P(\text{person is non-binary}) = 10.8\%$
+
+b.  
+
+```{r}
+prior <- c(0.08, 0.92)
+likelihood <- c(0.2, 0.1)
+posterior <- prior * likelihood / sum(prior * likelihood)
+posterior
+```
+
+$P(\text{swipe right | is non-binary}) = 14.8%$
+
+**Exercise 2.8:**
+
+```{r}
+prob_delay <- c(0.15, 0.85)
+prob_flight_time <- c(0.3, 0.3, 0.4)  # morning, afternoon, evening
+prob_flight_time_if_delay <- c(0.4, 0.5, 0.1)
+prob_flight_time_if_no_delay <- (prob_flight_time - prob_flight_time_if_delay * prob_delay[1]) / prob_delay[2]
+```
+
+a.  
+
+```{r}
+prior <- prob_delay
+likelihood <- c(prob_flight_time_if_delay[1], prob_flight_time_if_no_delay[1])
+posterior <- prior * likelihood / sum(prior * likelihood)
+posterior
+```
+
+$P(\text{flight delayed | morning flight}) = 20%$
+
+b.  
+
+```{r}
+prob_flight_time_if_no_delay
+```
+
+$P(\text{morning flight | flight not delayed}) = 28.2\%$
+
+**Exercise 2.9:**
+
+a\.
+
+```{r}
+good_mood <- 0.4
+bad_mood <- 1 - good_mood
+texts_if_good_mood <- c(0.05, 0.84, 0.11)
+texts_if_bad_mood <- c(0.13, 0.86, 0.01)
+texts_and_good_mood <- texts_if_good_mood * good_mood
+texts_and_bad_mood <- texts_if_bad_mood * bad_mood
+
+cat("num of texts and good mood =", texts_and_good_mood, "\n")
+cat("num of texts and bad mood =", texts_and_bad_mood, "\n")
+cat("num of texts =", texts_and_bad_mood + texts_and_good_mood)
+```
+
+|            | good mood | bad mood | total |
+|------------|:---------:|:--------:|:-----:|
+| 0 texts    |   0.02    |  0.078   | 0.098 |
+| 1-45 texts |   0.336   |  0.516   | 0.852 |
+| 46+ texts  |   0.044   |  0.006   | 0.05  |
+| Total      |    0.4    |   0.6    |   1   |
+
+b\. There is a $40\%$ probability that the roommate is in a good mood. This is the **prior** part of Bayes' Rule
+
+c\. $11\%$ - this is the **likelihood** part of Bayes' Rule.
+
+d\.
+
+```{r}
+prior <- c(0.4, 0.6)
+likelihood <- c(0.11, 0.01)
+posterior <- prior * likelihood / sum(prior * likelihood)
+posterior
+```
+
+Posterior probability that roommate is in good mood is $88\%$.
+
+**Exercise 2.10:**
